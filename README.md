@@ -113,11 +113,12 @@ docker compose exec app python -m scripts.seed_demo
 
 ## Demo accounts
 
-With `DEMO_MODE=true`, the Log in page offers **Log in as User**. The password is the one you set in `DEMO_PASSWORD`.
+With `DEMO_MODE=true`, the Log in page offers **Log in as User** and **Log in as Second user**. The password is the one you set in `DEMO_PASSWORD`.
 
 | Role | Email | What to try |
 |------|-------|-------------|
 | User | `user@demo.gigvault.test` | Kavya's year: 7 clients, 11 gigs. Open a partly paid gig, add a payment and watch the balance and dashboard change, switch the dashboard to a custom range, export CSV, attach a contract. Blocked: a gig of `other@demo.gigvault.test` opened by its id gives "not found". |
+| Second user | `other@demo.gigvault.test` | Arjun's own, separate data: one client, one gig and one payment. Kavya's clients, gigs and payments are not visible to him, and his are not visible to her. |
 
 Demo accounts cannot change their email or password or delete themselves.
 

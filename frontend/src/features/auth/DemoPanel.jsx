@@ -10,7 +10,8 @@ import { errorMessage } from '../../lib/apiErrors';
 
 /**
  * Demo mode only (UI-UX.md screen 1): each demo account's role, email and its public demo-only
- * password, with "Log in as User". GET /demo answers 404 when demo mode is off; then nothing shows.
+ * password, with "Log in as <role>" (User and Second user). GET /demo answers 404 when demo mode is
+ * off; then nothing shows.
  */
 export function DemoPanel() {
   const { login } = useAuth();
@@ -39,7 +40,7 @@ export function DemoPanel() {
         <IconPresentation size={16} aria-hidden="true" /> Demo mode
       </div>
       {data.accounts.map((account) => (
-        <div key={account.email}>
+        <div key={account.email} className="not-first:mt-4">
           <dl className="dl mt-2.5 mb-3" style={{ gridTemplateColumns: '76px 1fr' }}>
             <dt>Role</dt>
             <dd>{account.role}</dd>

@@ -67,6 +67,20 @@ test('the demo panel shows the demo account and logs in with one click to a year
   await expect(page.getByText('₹73,250.00').first()).toBeVisible();
 });
 
+test('the demo panel also offers a second user, who sees only their own gig', async ({ page }) => {
+  await page.goto('/login');
+  const demo = page.getByRole('region', { name: /Demo mode/ });
+  await expect(demo).toContainText(SEEDED.otherDemo);
+  await demo.getByRole('button', { name: /Log in as Second user/ }).click();
+  await expect(page.getByRole('heading', { name: 'Earnings' })).toBeVisible();
+
+  await page.goto('/gigs');
+  await expect(page.getByText('Landing page').first()).toBeVisible();
+  // Kavya's gigs belong to the first demo user and are not in this list.
+  await expect(page.getByText('Brand refresh')).toHaveCount(0);
+  await expect(page.getByText('Website copy')).toHaveCount(0);
+});
+
 test('forgot password: the emailed link sets a new password that then logs in', async ({ page, request }) => {
   test.setTimeout(90_000);
   const user = await newUser(request);
