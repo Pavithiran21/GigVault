@@ -148,9 +148,9 @@ One free [Render](https://render.com) web service from the `Dockerfile` (see [`r
 
 - **Database:** MongoDB Atlas free (M0) with a `gigvault_demo` database; allow Render's outbound IPs (or 0.0.0.0/0) under Network Access. Use Atlas, not a standalone MongoDB: payments need transactions.
 - **Settings:** `APP_ENV=production`, `FORWARDED_ALLOW_IPS=*`, `DEMO_MODE=true`, `DEMO_PASSWORD`, `FRONTEND_URL` = the service URL, and SMTP for real mail (Brevo) plus `DEMO_SMTP_*` (Ethereal) for the demo accounts' mail.
-- **Demo data:** run `python -m scripts.seed_demo` once from the service's Shell.
+- **Demo data:** free Render services have no Shell, so run `python -m scripts.seed_demo` once from your own machine, with `ENV_FILE` pointing at an env file whose `MONGODB_URI` ends in `/gigvault_demo`.
 
-Free services sleep after 15 minutes without traffic, so the first visit after that takes about a minute.
+Free services sleep after 15 minutes without traffic, so the first visit after that takes about a minute. Free Render also blocks outbound SMTP (ports 25, 465 and 587), so the live demo sends no email; everything else works.
 
 ## Demo videos
 
