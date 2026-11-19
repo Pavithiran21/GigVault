@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/Pavithiran21/GigVault/actions/workflows/ci.yml/badge.svg)](https://github.com/Pavithiran21/GigVault/actions/workflows/ci.yml)
 
+**Live demo: [gigvault-pavithiran.onrender.com](https://gigvault-pavithiran.onrender.com)** (the log-in page has a one-click demo account). It runs on free hosting, so the first load after a quiet spell can take about a minute.
+
 An earnings tracker for freelancers. You record your clients, the gigs you agree with them and every payment as it arrives, partial ones included. GigVault always shows who still owes you what, and how much you earned this month, this year or in any date range.
 
 **Python 3.15 · FastAPI · MongoDB (Decimal128, transactions) · React 19 · TanStack Query · Tailwind CSS 4 · Playwright**
