@@ -8,7 +8,7 @@
 # Free Render also blocks outbound SMTP (ports 25, 465, 587), so no email is sent from the live demo.
 services:
   - type: web
-    name: gigvault
+    name: gigvault-pavithiran
     runtime: docker
     plan: free
     healthCheckPath: /api/health
