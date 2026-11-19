@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ccf5ee"/></linearGradient>
+    <clipPath id="clip"><rect x="3" y="3" width="58" height="58" rx="17"/></clipPath>
+  </defs>
+  <g clip-path="url(#clip)">
+    <rect x="3" y="3" width="58" height="58" fill="#0b5f58"/>
+    <path d="M3 3H61L32 32z" fill="#17a596"/>
+    <path d="M61 3V61L32 32z" fill="#0f7f74"/>
+    <path d="M61 61H3L32 32z" fill="#06463f"/>
+    <path d="M3 61V3L32 32z" fill="#0d6a62"/>
+    <rect x="3" y="3" width="58" height="26" fill="url(#sheen)"/>
+  </g>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="none" stroke="#7ee8da" stroke-opacity=".55" stroke-width="1.4"/>
+  <path d="M42.2 23.6A14 14 0 1 0 46 34H34.5" fill="none" stroke="url(#g)" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#a7f3d0"><rect x="35.5" y="38" width="3.2" height="4.5" rx="1"/><rect x="40" y="35.5" width="3.2" height="7" rx="1"/></g>
+  <circle cx="51.5" cy="12.5" r="2.4" fill="#a7f3d0"/>
+</svg>

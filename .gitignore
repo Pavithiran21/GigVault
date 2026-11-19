@@ -1,0 +1,29 @@
+# Secrets (real values live only in these files)
+.env
+.env.test
+.env.demo
+**/.env
+.env*
+
+# Test and demo output
+e2e-results/
+videos/
+test-results/
+playwright-report/
+
+# Dependencies and build output
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+dist/
+coverage/
+
+# Local run state
+.run/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
