@@ -147,10 +147,13 @@ The tests need a MongoDB that can run transactions (a replica set; Atlas is one)
 
 ## Deploy
 
-One free [Render](https://render.com) web service from the `Dockerfile` (see [`render.yaml`](render.yaml)): FastAPI serves the built frontend, so the app, the API and the refresh cookie share one origin, with no CORS or cross-site cookies.
+The frontend runs on [Vercel](https://vercel.com) and the API on [Render](https://render.com), and the browser still sees one origin: [`frontend/vercel.json`](frontend/vercel.json) forwards `/api/*` to the Render service, so the cookies (SameSite=Strict) work with no CORS or cross-site cookies.
+
+- **Frontend (Vercel):** import the repository, set the Root Directory to `frontend` (framework Vite, build `npm run build`, output `dist`). `vercel.json` also sends every other path to `index.html` for React Router and sets the page's security headers. If the Render service is renamed, change its URL in `vercel.json`.
+- **API (Render):** one free web service from `Dockerfile.api` (see [`render.yaml`](render.yaml)). The full `Dockerfile` (API plus built frontend on one origin) is what `docker-compose.yml` and CI use.
 
 - **Database:** MongoDB Atlas free (M0) with a `gigvault_demo` database; allow Render's outbound IPs (or 0.0.0.0/0) under Network Access. Use Atlas, not a standalone MongoDB: payments need transactions.
-- **Settings:** `APP_ENV=production`, `FORWARDED_ALLOW_IPS=*`, `DEMO_MODE=true`, `DEMO_PASSWORD`, `FRONTEND_URL` = the service URL, and SMTP for real mail (Brevo) plus `DEMO_SMTP_*` (Ethereal) for the demo accounts' mail.
+- **Settings:** `APP_ENV=production`, `FORWARDED_ALLOW_IPS=*`, `DEMO_MODE=true`, `DEMO_PASSWORD`, `FRONTEND_URL` = the Vercel URL, and SMTP for real mail (Brevo) plus `DEMO_SMTP_*` (Ethereal) for the demo accounts' mail.
 - **Demo data:** free Render services have no Shell, so run `python -m scripts.seed_demo` once from your own machine, with `ENV_FILE` pointing at an env file whose `MONGODB_URI` ends in `/gigvault_demo`.
 
 Free services sleep after 15 minutes without traffic, so the first visit after that takes about a minute. Free Render also blocks outbound SMTP (ports 25, 465 and 587), so the live demo sends no email; everything else works.
