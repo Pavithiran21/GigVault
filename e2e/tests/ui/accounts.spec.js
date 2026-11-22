@@ -52,11 +52,12 @@ test('create an account in the browser: an empty start, then log out and back in
   await expect(page.getByRole('heading', { name: 'No gigs yet' })).toBeVisible();
 });
 
-test('the demo panel shows the demo account and logs in with one click to a year of data', async ({ page, request }) => {
+test('the demo panel shows the demo account but no password, and logs in with one click to a year of data', async ({ page, request }) => {
   await page.goto('/login');
   const demo = page.getByRole('region', { name: /Demo mode/ });
   await expect(demo).toContainText(SEEDED.demo);
-  await expect(demo).toContainText(process.env.DEMO_PASSWORD);
+  await expect(demo).not.toContainText(process.env.DEMO_PASSWORD);
+  await expect(demo).not.toContainText(/password/i);
   await demo.getByRole('button', { name: /Log in as User/ }).click();
   await expect(page.getByRole('heading', { name: 'Earnings' })).toBeVisible();
 

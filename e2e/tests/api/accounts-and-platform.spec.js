@@ -185,9 +185,10 @@ test.describe('the demo accounts', () => {
     expect((await json(await locked.get('/me'), 200)).isDemo).toBe(true);
   });
 
-  test('with DEMO_MODE on, /api/demo lists the demo account and its password, and Kavya\'s year of data is there', async ({ request }) => {
+  test('with DEMO_MODE on, /api/demo lists both demo accounts but never a password, and Kavya\'s year of data is there', async ({ request }) => {
     const info = await json(await request.get(apiUrl('/demo')), 200);
-    expect(info.accounts).toEqual([{ role: 'User', email: SEEDED.demo, password: process.env.DEMO_PASSWORD }]);
+    expect(info).toEqual({ accounts: [{ role: 'User', email: SEEDED.demo }, { role: 'Second user', email: SEEDED.otherDemo }] });
+    expect(JSON.stringify(info)).not.toContain(process.env.DEMO_PASSWORD);
     const kavya = await loginAs(request, SEEDED.demo, process.env.DEMO_PASSWORD);
     expect(await json(await kavya.get('/me'), 200)).toMatchObject({ name: 'Kavya Nair', isDemo: true });
     const clients = await json(await kavya.get('/clients'), 200);
@@ -195,6 +196,17 @@ test.describe('the demo accounts', () => {
     expect((await json(await kavya.get('/gigs?size=100'), 200)).totalItems).toBe(11);
     // 18,000.00 + 12,500.00 + 42,750.00, as in the design.
     expect((await json(await kavya.get('/dashboard?period=year'), 200)).outstanding.amount).toBe('73250.00');
+  });
+
+  test('"Log in as" starts a demo session without a password; only the two demo roles are accepted', async ({ request }) => {
+    for (const [role, email] of [['User', SEEDED.demo], ['Second user', SEEDED.otherDemo]]) {
+      const response = await request.post(apiUrl('/demo/login'), { data: { role } });
+      const session = await json(response, 200);
+      expect(session.user).toMatchObject({ email, isDemo: true });
+      expect(response.headers()['set-cookie']).toMatch(/gv_refresh=.*HttpOnly/i);
+      expect((await request.get(apiUrl('/me'), { headers: { Authorization: `Bearer ${session.accessToken}` } })).status()).toBe(200);
+    }
+    await failure(await request.post(apiUrl('/demo/login'), { data: { role: 'Admin' } }), 400, 'VALIDATION_FAILED');
   });
 
   test('the second demo account\'s gig is "not found" for the first', async ({ request }) => {

@@ -1,7 +1,7 @@
 import { IconLogin, IconPresentation } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getDemoAccounts } from '../../api/demo';
+import { demoLogin, getDemoAccounts } from '../../api/demo';
 import { queryKeys } from '../../api/queryKeys';
 import { useAuth } from '../../auth/AuthContext';
 import { Banner } from '../../components/Banner';
@@ -9,12 +9,13 @@ import { Button } from '../../components/Button';
 import { errorMessage } from '../../lib/apiErrors';
 
 /**
- * Demo mode only (UI-UX.md screen 1): each demo account's role, email and its public demo-only
- * password, with "Log in as <role>" (User and Second user). GET /demo answers 404 when demo mode is
- * off; then nothing shows.
+ * Demo mode only (UI-UX.md screen 1): each demo account's role and email, with "Log in as <role>"
+ * (User and Second user). The button asks the backend to start the session, so no password is shown
+ * or held by the page (a public page that prints credentials gets flagged as phishing). GET /demo
+ * answers 404 when demo mode is off; then nothing shows.
  */
 export function DemoPanel() {
-  const { login } = useAuth();
+  const { startSession } = useAuth();
   const [pendingEmail, setPendingEmail] = useState(null);
   const [error, setError] = useState(null);
   const { data } = useQuery({ queryKey: queryKeys.demo, queryFn: getDemoAccounts, retry: false, staleTime: Infinity });
@@ -27,7 +28,7 @@ export function DemoPanel() {
     setPendingEmail(account.email);
     setError(null);
     try {
-      await login({ email: account.email, password: account.password });
+      startSession(await demoLogin(account.role));
     } catch (loginError) {
       setError(errorMessage(loginError));
       setPendingEmail(null);
@@ -46,8 +47,6 @@ export function DemoPanel() {
             <dd>{account.role}</dd>
             <dt>Email</dt>
             <dd>{account.email}</dd>
-            <dt>Password</dt>
-            <dd>{account.password}</dd>
           </dl>
           <Button
             className="btn btn-soft w-full"
